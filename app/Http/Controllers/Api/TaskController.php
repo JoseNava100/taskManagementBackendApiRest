@@ -80,18 +80,16 @@ class TaskController extends Controller
                 return response()->json($message, 404);
 
             } else {
-                
-                // $task = Task::create([
-                //     'title' => $request->title,
-                //     'sub_title' => $request->sub_title,
-                //     'description' => $request->description,
-                //     'due_date' => $request->due_date,
-                //     'status' => $request->status,
-                //     'priority' => $request->priority,
-                //     'user_id' => $request->user_id
-                // ]);
 
-                $task = Task::create($request->only(['title', 'sub_title', 'description', 'due_date', 'status', 'priority', 'user_id']));
+                $task = Task::create($request->only([
+                    'title', 
+                    'sub_title', 
+                    'description', 
+                    'due_date', 
+                    'status', 
+                    'priority', 
+                    'user_id'
+                ]));
     
                 if (!$task) {
     
@@ -136,9 +134,62 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
-        //
+        $task = Task::find($id);
+
+        if (!$task) {
+            
+            $message = [
+                'message' => 'Task not found',
+                'status' => 404
+            ];
+
+            return response()->json($message, 404);
+
+        } else {
+
+            $validation = Validator::make($request->all(), [
+                'title' => 'string|max:50',
+                'sub_title' => 'string|max:50',
+                'description' => 'string|max:100',
+                'due_date' => 'date|after_or_equal:today|date_format:Y-m-d',
+                'status' => 'string|in:pending,in_progress,completed',
+                'priority' => 'string|in:low,medium,high',
+                'user_id' => 'integer'
+            ]);
+
+            if ($validation->fails()) {
+                
+                $message = [
+                    'message' => 'Error in data validations',
+                    'errors' => $validation->errors(),
+                    'status' => 400
+                ];
+
+                return response()->json($message, 400);
+
+            } else {
+                
+                $task->fill($request->only([
+                    'title', 
+                    'sub_title', 
+                    'description', 
+                    'due_date', 
+                    'status', 
+                    'priority', 
+                    'user_id'
+                ]))->save();
+
+                $message = [
+                    'message' => 'Update task',
+                    'character' => $task,
+                    'status' => 200
+                ];
+
+                return response()->json($message, 200);
+            }
+        }
     }
 
     /**
@@ -146,7 +197,54 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $task = Task::find($id);
+
+        if (!$task) {
+            
+            $message = [
+                'message' => 'Task not found',
+                'status' => 404
+            ];
+
+            return response()->json($message, 404);
+
+        } else {
+            
+            $validation = Validator::make($request->all(), [
+                'title' => 'required|string|max:50',
+                'sub_title' => 'required|string|max:50',
+                'description' => 'required|string|max:100',
+                'due_date' => 'required|date|after_or_equal:today|date_format:Y-m-d',
+                'status' => 'required|string|in:pending,in_progress,completed',
+                'priority' => 'required|string|in:low,medium,high',
+                'user_id' => 'required|integer'
+            ]);
+
+            if ($validation->fails()) {
+                
+                $message = [
+                    'message' => 'Error in data validations',
+                    'errors' => $validation->errors(),
+                    'status' => 400
+                ];
+
+                return response()->json($message, 400);
+
+            } else {
+                
+                $task-> update($request->only([
+                    'title', 
+                    'sub_title', 
+                    'description', 
+                    'due_date', 
+                    'status', 
+                    'priority', 
+                    'user_id'
+                ]));
+
+                return response()->json($task, 200);
+            }
+        }
     }
 
     /**
@@ -154,6 +252,27 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $task = Task::find($id);
+
+        if (!$task) {
+            
+            $message = [
+                'message' => 'Task not found',
+                'status' => 404
+            ];
+
+            return response()->json($message, 404);
+
+        } else {
+            
+            $task->delete();
+
+            $message = [
+                'message' => 'Delete task',
+                'status' => 200
+            ];
+
+            return response()->json($message, 200);
+        }
     }
 }
