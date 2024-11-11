@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -81,18 +80,18 @@ class TaskController extends Controller
                 return response()->json($message, 404);
 
             } else {
-
-                $due_date = Carbon::parse($request->due_date)->format('Y-m-d');
                 
-                $task = Task::create([
-                    'title' => $request->title,
-                    'sub_title' => $request->sub_title,
-                    'description' => $request->description,
-                    'due_date' => $due_date,
-                    'status' => $request->status,
-                    'priority' => $request->priority,
-                    'user_id' => $request->user_id
-                ]);
+                // $task = Task::create([
+                //     'title' => $request->title,
+                //     'sub_title' => $request->sub_title,
+                //     'description' => $request->description,
+                //     'due_date' => $request->due_date,
+                //     'status' => $request->status,
+                //     'priority' => $request->priority,
+                //     'user_id' => $request->user_id
+                // ]);
+
+                $task = Task::create($request->only(['title', 'sub_title', 'description', 'due_date', 'status', 'priority', 'user_id']));
     
                 if (!$task) {
     
