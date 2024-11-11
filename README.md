@@ -1,4 +1,4 @@
-<p style="display: flex; justify-content: center; align-items: center; font-size: 100px;">
+<p align="center" style="display: flex; justify-content: center; align-items: center; font-size: 100px;">
   <a href="https://laravel.com" target="_blank">
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" width="150" alt="Laravel Logo" />
   </a>
