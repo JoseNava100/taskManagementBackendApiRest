@@ -10,7 +10,7 @@
 
 # API de Gestión de Tareas
   
-Esta API permite a los usuarios gestionar sus tareas personales a través de una plataforma en la que pueden crear, leer, actualizar y eliminar tareas. La API está construida utilizando el framework Laravel y sigue un diseño RESTFULl para facilitar la integración con aplicaciones frontend.
+Esta API permite a los usuarios gestionar sus tareas personales a través de una plataforma en la que pueden crear, leer, actualizar y eliminar tareas. La API está construida utilizando el framework Laravel y sigue un diseño RESTFULL para facilitar la integración con aplicaciones frontend.
 
 ## Características
 
