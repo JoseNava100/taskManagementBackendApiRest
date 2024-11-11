@@ -2,7 +2,7 @@
   <a href="https://laravel.com" target="_blank">
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" width="150" alt="Laravel Logo" />
   </a>
-  <span style="margin: 0 20px;">+</span>
+  <span style="margin: 0 20px;"></span>
   <a href="https://react.dev" target="_blank">
     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" width="150" alt="React Logo" />
   </a>
