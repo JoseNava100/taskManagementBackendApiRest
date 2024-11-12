@@ -153,19 +153,32 @@ class RoleController extends Controller
                 return response()->json($message, 400);
 
             } else {
-                
-                $role->fill($request->only([
-                    'name', 
-                    'description'
-                ]))->save();
 
-                $message = [
-                    'message' => 'Update role',
-                    'character' => $role,
-                    'status' => 200
-                ];
+                if (Role::where('name', $request->name)->exists() && Role::where('description', $request->description)->exists()){
 
-                return response()->json($message, 200);
+                    $message = [
+                        'message' => 'The dates already exists, please enter a new one',
+                        'status' => 400
+                    ];
+    
+                    return response()->json($message, 400);
+
+                } else {
+                    
+                    $role->fill($request->only([
+                        'name', 
+                        'description'
+                    ]))->save();
+    
+                    $message = [
+                        'message' => 'Update role',
+                        'character' => $role,
+                        'status' => 200
+                    ];
+    
+                    return response()->json($message, 200);
+                    
+                }
             }
         }
     }
@@ -204,13 +217,26 @@ class RoleController extends Controller
                 return response()->json($message, 400);
 
             } else {
-                
-                $role-> update($request->only([
-                    'name', 
-                    'description'
-                ]));
 
-                return response()->json($role, 200);
+                if (Role::where('name', $request->name)->exists() && Role::where('description', $request->description)->exists()){
+
+                    $message = [
+                        'message' => 'The dates already exists, please enter a new one',
+                        'status' => 400
+                    ];
+    
+                    return response()->json($message, 400);
+
+                } else {
+                    
+                    $role-> update($request->only([
+                        'name', 
+                        'description'
+                    ]));
+    
+                    return response()->json($role, 200);
+                    
+                }
             }
         }
     }
