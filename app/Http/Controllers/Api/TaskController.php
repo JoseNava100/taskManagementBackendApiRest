@@ -188,24 +188,43 @@ class TaskController extends Controller
                 return response()->json($message, 400);
 
             } else {
+
+                if (Task::where('title', $request->title)->exists() && 
+                    Task::where('sub_title', $request->sub_title)->exists() &&
+                    Task::where('description', $request->description)->exists() &&
+                    Task::where('due_date', $request->due_date)->exists() &&
+                    Task::where('status', $request->status)->exists() &&
+                    Task::where('priority', $request->priority)->exists() &&
+                    Task::where('user_id', $request->user_id)->exists()) {
                 
-                $task->fill($request->only([
-                    'title', 
-                    'sub_title', 
-                    'description', 
-                    'due_date', 
-                    'status', 
-                    'priority', 
-                    'user_id'
-                ]))->save();
+                    $message = [
+                        'message' => 'The dates already exists, please enter a new one',
+                        'status' => 400
+                    ];
+    
+                    return response()->json($message, 400);
+    
+                } else {
+                    
+                    $task->fill($request->only([
+                        'title', 
+                        'sub_title', 
+                        'description', 
+                        'due_date', 
+                        'status', 
+                        'priority', 
+                        'user_id'
+                    ]))->save();
+    
+                    $message = [
+                        'message' => 'Update task',
+                        'character' => $task,
+                        'status' => 200
+                    ];
+    
+                    return response()->json($message, 200);
 
-                $message = [
-                    'message' => 'Update task',
-                    'character' => $task,
-                    'status' => 200
-                ];
-
-                return response()->json($message, 200);
+                }
             }
         }
     }
@@ -249,18 +268,37 @@ class TaskController extends Controller
                 return response()->json($message, 400);
 
             } else {
-                
-                $task-> update($request->only([
-                    'title', 
-                    'sub_title', 
-                    'description', 
-                    'due_date', 
-                    'status', 
-                    'priority', 
-                    'user_id'
-                ]));
 
-                return response()->json($task, 200);
+                if (Task::where('title', $request->title)->exists() && 
+                    Task::where('sub_title', $request->sub_title)->exists() &&
+                    Task::where('description', $request->description)->exists() &&
+                    Task::where('due_date', $request->due_date)->exists() &&
+                    Task::where('status', $request->status)->exists() &&
+                    Task::where('priority', $request->priority)->exists() &&
+                    Task::where('user_id', $request->user_id)->exists()) {
+                
+                    $message = [
+                        'message' => 'The dates already exists, please enter a new one',
+                        'status' => 400
+                    ];
+    
+                    return response()->json($message, 400);
+    
+                } else {
+                    
+                    $task-> update($request->only([
+                        'title', 
+                        'sub_title', 
+                        'description', 
+                        'due_date', 
+                        'status', 
+                        'priority', 
+                        'user_id'
+                    ]));
+    
+                    return response()->json($task, 200);
+
+                }
             }
         }
     }
