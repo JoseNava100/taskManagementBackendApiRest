@@ -26,3 +26,25 @@ Route::get('/role/{role}', [RoleController::class, 'show']);
 Route::patch('/role/{role}', [RoleController::class, 'edit']);
 Route::put('/role/{role}', [RoleController::class, 'update']);
 Route::delete('/role/{role}', [RoleController::class, 'destroy']);
+
+    /**
+     * Run HTTP Request User.
+     */
+    
+Route::get('/user', [RoleController::class, 'index']);
+Route::post('/user', [RoleController::class, 'store']);
+Route::get('/user/{user}', [RoleController::class, 'show']);
+Route::patch('/user/{user}', [RoleController::class, 'edit']);
+Route::put('/user/{user}', [RoleController::class, 'update']);
+Route::delete('/user/{user}', [RoleController::class, 'destroy']);
+
+    /**
+     * Run HTTP Request User Session.
+     */
+    
+Route::get('/session/user', [RoleController::class, 'index']);
+Route::post('/session/user', [RoleController::class, 'store']);
+Route::get('/session/user/{user}', [RoleController::class, 'show']);
+Route::patch('/session/user/{user}', [RoleController::class, 'edit']);
+Route::put('/session/user/{user}', [RoleController::class, 'update']);
+Route::delete('/session/user/{user}', [RoleController::class, 'destroy']);
