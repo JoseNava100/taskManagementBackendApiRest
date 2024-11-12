@@ -81,29 +81,47 @@ class TaskController extends Controller
 
             } else {
 
-                $task = Task::create($request->only([
-                    'title', 
-                    'sub_title', 
-                    'description', 
-                    'due_date', 
-                    'status', 
-                    'priority', 
-                    'user_id'
-                ]));
-    
-                if (!$task) {
-    
+                if (Task::where('title', $request->title)->exists() && 
+                    Task::where('sub_title', $request->sub_title)->exists() &&
+                    Task::where('description', $request->description)->exists() &&
+                    Task::where('due_date', $request->due_date)->exists() &&
+                    Task::where('status', $request->status)->exists() &&
+                    Task::where('priority', $request->priority)->exists() &&
+                    Task::where('user_id', $request->user_id)->exists()) {
+                
                     $message = [
-                        'message' => 'Error creating task',
-                        'status' => 500
+                        'message' => 'The dates already exists, please enter a new one',
+                        'status' => 400
                     ];
     
-                    return response()->json($message, 500);
+                    return response()->json($message, 400);
     
                 } else {
                     
-                    return response()->json($task, 201);
-    
+                    $task = Task::create($request->only([
+                        'title', 
+                        'sub_title', 
+                        'description', 
+                        'due_date', 
+                        'status', 
+                        'priority', 
+                        'user_id'
+                    ]));
+        
+                    if (!$task) {
+        
+                        $message = [
+                            'message' => 'Error creating task',
+                            'status' => 500
+                        ];
+        
+                        return response()->json($message, 500);
+        
+                    } else {
+                        
+                        return response()->json($task, 201);
+        
+                    }
                 }
             }
         }
