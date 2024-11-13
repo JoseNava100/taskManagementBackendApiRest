@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UserSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,20 +33,20 @@ Route::delete('/role/{role}', [RoleController::class, 'destroy']);
      * Run HTTP Request User.
      */
     
-Route::get('/user', [RoleController::class, 'index']);
-Route::post('/user', [RoleController::class, 'store']);
-Route::get('/user/{user}', [RoleController::class, 'show']);
-Route::patch('/user/{user}', [RoleController::class, 'edit']);
-Route::put('/user/{user}', [RoleController::class, 'update']);
-Route::delete('/user/{user}', [RoleController::class, 'destroy']);
+Route::get('/user', [UserController::class, 'index']);
+Route::post('/user', [UserController::class, 'store']);
+Route::get('/user/{user}', [UserController::class, 'show']);
+Route::patch('/user/{user}', [UserController::class, 'edit']);
+Route::put('/user/{user}', [UserController::class, 'update']);
+Route::delete('/user/{user}', [UserController::class, 'destroy']);
 
     /**
      * Run HTTP Request User Session.
      */
     
-Route::get('/session/user', [RoleController::class, 'index']);
-Route::post('/session/user', [RoleController::class, 'store']);
-Route::get('/session/user/{user}', [RoleController::class, 'show']);
-Route::patch('/session/user/{user}', [RoleController::class, 'edit']);
-Route::put('/session/user/{user}', [RoleController::class, 'update']);
-Route::delete('/session/user/{user}', [RoleController::class, 'destroy']);
+Route::get('/session/user', [UserSessionController::class, 'index']);
+Route::post('/session/user', [UserSessionController::class, 'store']);
+Route::get('/session/user/{user}', [UserSessionController::class, 'show']);
+Route::patch('/session/user/{user}', [UserSessionController::class, 'edit']);
+Route::put('/session/user/{user}', [UserSessionController::class, 'update']);
+Route::delete('/session/user/{user}', [UserSessionController::class, 'destroy']);
