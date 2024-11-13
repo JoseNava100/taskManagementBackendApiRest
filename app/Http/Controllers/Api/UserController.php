@@ -47,10 +47,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'username' => 'required|string|max:30',
+            'username' => 'required|string|max:30|unique:users',
             'first_name' => 'required|string|max:25',
             'last_name' => 'required|string|max:25',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:users',
             'email_verified_at' => 'nullable|date',
             'password' => 'required|string|min:8|max:20|confirmed',
             'role_id' => 'required|integer|min:1'
@@ -110,7 +110,7 @@ class UserController extends Controller
                     if (!$role) {
         
                         $message = [
-                            'message' => 'Error creating role',
+                            'message' => 'Error creating user',
                             'status' => 500
                         ];
         
@@ -131,15 +131,99 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+
+            $message = [
+                'message' => 'User not found',
+                'status' => 400
+            ];
+
+            return response()->json($message, 400);
+
+        } else {
+            
+            return response()->json($user, 200);
+        }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            
+            $message = [
+                'message' => 'User not found',
+                'status' => 404
+            ];
+
+            return response()->json($message, 404);
+
+        } else {
+
+            $validation = Validator::make($request->all(), [
+                'username' => 'string|max:30|unique:users',
+                'first_name' => 'string|max:25',
+                'last_name' => 'string|max:25',
+                'email' => 'email|max:255|unique:users',
+                'email_verified_at' => 'nullable|date',
+                'password' => 'string|min:8|max:20|confirmed',
+                'role_id' => 'integer|min:1'
+            ]);
+
+            if ($validation->fails()) {
+                
+                $message = [
+                    'message' => 'Error in data validations',
+                    'errors' => $validation->errors(),
+                    'status' => 400
+                ];
+
+                return response()->json($message, 400);
+
+            } else {
+
+                if (User::where('username', $request->username)->exists() && 
+                    User::where('first_name', $request->first_name)->exists() &&
+                    User::where('last_name', $request->last_name)->exists() &&
+                    User::where('email', $request->email)->exists() &&
+                    User::where('role_id', $request->role_id)->exists()) {
+                
+                    $message = [
+                        'message' => 'The dates already exists, please enter a new one',
+                        'status' => 400
+                    ];
+    
+                    return response()->json($message, 400);
+    
+                } else {
+                    
+                    $user->fill($request->only([
+                        'username', 
+                        'first_name', 
+                        'last_name', 
+                        'email', 
+                        'email_verified_at', 
+                        'password', 
+                        'role_id'
+                    ]))->save();
+    
+                    $message = [
+                        'message' => 'Update user',
+                        'character' => $user,
+                        'status' => 200
+                    ];
+    
+                    return response()->json($message, 200);
+
+                }
+            }
+        }
     }
 
     /**
@@ -147,7 +231,71 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            
+            $message = [
+                'message' => 'User not found',
+                'status' => 404
+            ];
+
+            return response()->json($message, 404);
+
+        } else {
+            
+            $validation = Validator::make($request->all(), [
+                'username' => 'string|max:30|unique:users',
+                'first_name' => 'required|string|max:25',
+                'last_name' => 'required|string|max:25',
+                'email' => 'email|max:255|unique:users',
+                'email_verified_at' => 'nullable|date',
+                'password' => 'required|string|min:8|max:20|confirmed',
+                'role_id' => 'required|integer|min:1'
+            ]);
+
+            if ($validation->fails()) {
+                
+                $message = [
+                    'message' => 'Error in data validations',
+                    'errors' => $validation->errors(),
+                    'status' => 400
+                ];
+
+                return response()->json($message, 400);
+
+            } else {
+
+                if (User::where('username', $request->username)->exists() && 
+                    User::where('first_name', $request->first_name)->exists() &&
+                    User::where('last_name', $request->last_name)->exists() &&
+                    User::where('email', $request->email)->exists() &&
+                    User::where('role_id', $request->role_id)->exists()) {
+                
+                    $message = [
+                        'message' => 'The dates already exists, please enter a new one',
+                        'status' => 400
+                    ];
+    
+                    return response()->json($message, 400);
+    
+                } else {
+                    
+                    $user-> update($request->only([
+                        'username', 
+                        'first_name', 
+                        'last_name', 
+                        'email', 
+                        'email_verified_at', 
+                        'password', 
+                        'role_id'
+                    ]));
+    
+                    return response()->json($user, 200);
+
+                }
+            }
+        }
     }
 
     /**
