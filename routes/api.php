@@ -44,9 +44,9 @@ Route::delete('/user/{user}', [UserController::class, 'destroy']);
      * Run HTTP Request User Session.
      */
     
-Route::get('/session/user', [UserSessionController::class, 'index']);
-Route::post('/session/user', [UserSessionController::class, 'store']);
-Route::get('/session/user/{user}', [UserSessionController::class, 'show']);
-Route::patch('/session/user/{user}', [UserSessionController::class, 'edit']);
-Route::put('/session/user/{user}', [UserSessionController::class, 'update']);
-Route::delete('/session/user/{user}', [UserSessionController::class, 'destroy']);
+Route::get('/session/user', [UserSessionController::class, '']);
+Route::post('/session/user', [UserSessionController::class, '']);
+Route::get('/session/user/{user}', [UserSessionController::class, '']);
+Route::patch('/session/user/{user}', [UserSessionController::class, '']);
+Route::put('/session/user/{user}', [UserSessionController::class, '']);
+Route::delete('/session/user/{user}', [UserSessionController::class, '']);
