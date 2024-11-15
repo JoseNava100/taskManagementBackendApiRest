@@ -44,9 +44,10 @@ Route::delete('/user/{user}', [UserController::class, 'destroy']);
      * Run HTTP Request User Session.
      */
     
-Route::get('/session/user', [UserSessionController::class, '']);
-Route::post('/session/user', [UserSessionController::class, '']);
-Route::get('/session/user/{user}', [UserSessionController::class, '']);
-Route::patch('/session/user/{user}', [UserSessionController::class, '']);
-Route::put('/session/user/{user}', [UserSessionController::class, '']);
-Route::delete('/session/user/{user}', [UserSessionController::class, '']);
+Route::post('/login', [UserSessionController::class, 'login']);
+Route::group(['middleware' => ['auth:sanctum']], function(){
+    
+    Route::get('/profile', [UserSessionController::class, 'profile']);
+    Route::post('/logout', [UserSessionController::class, 'logout']);
+
+});
